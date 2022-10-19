@@ -5,6 +5,5 @@
     "types": ["cypress", "node"]
   },
   "include": ["**/*.ts",
-  "../cypress.d.ts"],
-  "hideXHR": true
+  "../cypress.d.ts"]
 }
