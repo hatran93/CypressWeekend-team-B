@@ -1,10 +1,19 @@
 {
-  "devDependencies": {
-    "cypress": "^10.10.0",
-    "husky": "^8.0.1",
-    "prettier": "2.7.1"
-  },
-  "dependencies": {
-    "@testing-library/cypress": "^8.0.3"
-  }
+    "devDependencies": {
+        "cypress": "^10.10.0",
+        "eslint": "^8.25.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-cypress": "^2.12.1",
+        "husky": "^8.0.0",
+        "prettier": "2.7.1"
+    },
+    "dependencies": {
+        "@testing-library/cypress": "^8.0.3"
+    },
+    "scripts": {
+        "lint": "eslint --fix --max-warnings=0 .",
+        "format": "prettier --write .",
+        "test": "cypress run",
+        "prepare": "husky install"
+    }
 }
