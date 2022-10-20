@@ -9,3 +9,4 @@
 /.idea
 .idea/
 node_modules/
+/cypress/videos
