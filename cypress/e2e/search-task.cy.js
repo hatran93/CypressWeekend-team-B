@@ -3,7 +3,8 @@ describe("Search task", () => {
         cy.setCookie("__kwc_agreed", "true")
     })
 
-    it("Search one-way cheap flights", () => {
+    it.only("Search one-way cheap flights", () => {
+        cy.intercept('POST', 'https://tag-manager.kiwi.com/g/collect?*').as('tagManager')
         let originCity, destinationCity
         cy.visit("/cheap-flights")
         cy.get('[data-test="PictureCard"]')
@@ -38,12 +39,13 @@ describe("Search task", () => {
             .should("be.visible")
             .click()
             .then(() => {
+                cy.wait('@tagManager').its('response.statusCode').should('eq', 200)
                 cy.url().should(
                     "contain",
                     `/cheap-flights/${originCity}/${destinationCity}`
                 )
             })
-
+        
         // change to one-way and add 1 hand luggage
         cy.get('[data-test="SearchFormModesPicker-active-return"]')
             .should("be.visible")
