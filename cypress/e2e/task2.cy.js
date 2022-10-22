@@ -49,6 +49,19 @@ describe("Search task test", () => {
             '[data-test="JourneyBookingButton-Itinerary-bookingBtn"]'
         ).click()
         //8.
-        cy.get('[data-test="changeConfirmation-NewItinerary"]')
+        cy.get('[data-test="changeConfirmation-NewItinerary"]').within(() => {
+            cy.contains(newDestinationCity).should("be.visible")
+            cy.contains(newOriginCity).should("be.visible")
+        })
+        cy.get('[data-test="ChangeConfirmation-CheckoutBtn"]')
+            .scrollIntoView()
+            .should("be.visible")
+            .and("be.disabled")
+
+        cy.get('[data-test="changeConfirmation-LegalCheckbox"]')
+            .scrollIntoView()
+            .click({ force: true })
+
+        cy.get('[data-test="ChangeConfirmation-CheckoutBtn"]').click()
     })
 })
