@@ -1,13 +1,17 @@
 describe("Search task test", () => {
     beforeEach("setup", () => {
         cy.AllowCookies()
-        cy.CheapFlightsRootPage("/")
     })
 
     it("Search one-way flight", () => {
+        cy.visit("/cheap-flights/")
         cy.get('[data-test="PictureCard"]')
             .should("have.length", 30)
             .and("be.visible")
+            .each((link) => {
+                cy.request(link.prop("href")).its("status").should("eq", 200)
+            })
+
         cy.get('[data-test="PictureCard"]')
             .first()
             .click()
@@ -34,6 +38,7 @@ describe("Search task test", () => {
             .find("button")
             .eq(1)
             .click()
+
         cy.get('[data-test="PassengersField"]').should("contain", 1)
 
         cy.get('[data-test="PassengersFieldFooter-done"]').click()
