@@ -4,9 +4,14 @@ describe("Search task", () => {
     })
 
     it("Search one-way cheap flights", () => {
-        cy.intercept('POST', 'https://tag-manager.kiwi.com/g/collect?*').as('tagManager')
         let originCity, destinationCity
-        cy.visit("/cheap-flights")
+        cy.visit("/cheap-flights/")
+        cy.get('[data-test="PictureCard"]')
+            .should("have.length", 30)
+            .and("be.visible")
+            .each((link) => {
+                cy.request(link.prop("href")).its("status").should("eq", 200)
+            })
         cy.get('[data-test="PictureCard"]')
             .should("have.length", 30)
             .and("be.visible")
@@ -39,13 +44,12 @@ describe("Search task", () => {
             .should("be.visible")
             .click()
             .then(() => {
-                cy.wait('@tagManager').its('response.statusCode').should('eq', 200)
                 cy.url().should(
                     "contain",
                     `/cheap-flights/${originCity}/${destinationCity}`
                 )
             })
-        
+
         // change to one-way and add 1 hand luggage
         cy.get('[data-test="SearchFormModesPicker-active-return"]')
             .should("be.visible")
