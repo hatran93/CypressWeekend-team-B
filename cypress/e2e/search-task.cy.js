@@ -3,7 +3,7 @@ describe("Search task", () => {
         cy.setCookie("__kwc_agreed", "true")
     })
 
-    it.only("Search one-way cheap flights", () => {
+    it("Search one-way cheap flights", () => {
         cy.intercept('POST', 'https://tag-manager.kiwi.com/g/collect?*').as('tagManager')
         let originCity, destinationCity
         cy.visit("/cheap-flights")
