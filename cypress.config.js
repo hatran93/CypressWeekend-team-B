@@ -4,7 +4,7 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     env: { hideXHRInCommandLog: true },
     e2e: {
-        baseUrl: "https://www.kiwi.com/en"
+        baseUrl: "https://www.kiwi.com/en",
+        defaultCommandTimeout: 10000
     }
-    
 })
