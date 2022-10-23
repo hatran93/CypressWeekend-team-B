@@ -27,6 +27,6 @@
 Cypress.Commands.add("CheapFlightsRootPage", () => {
     cy.visit("/cheap-flights/")
 })
-Cypress.Commands.add("AllowCookies", () => {
-    cy.setCookie("__kwc_agreed", "true")
-})
+// Cypress.Commands.add("AllowCookies", () => {
+//     cy.setCookie("__kwc_agreed", "true")
+// })
