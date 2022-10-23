@@ -3,15 +3,15 @@ describe("Search task", () => {
         cy.setCookie("__kwc_agreed", "true")
     })
 
-    it("Search one-way cheap flights", () => {
-        let originCity, destinationCity
+    it.only("Search one-way cheap flights", () => {
+        let originDestination, finalDestination, originCity, finalCity
         cy.visit("/cheap-flights/")
         cy.get('[data-test="PictureCard"]')
             .should("have.length", 30)
             .and("be.visible")
-            .each((link) => {
-                cy.request(link.prop("href")).its("status").should("eq", 200)
-            })
+        // .each((link) => {
+        //     cy.request(link.prop("href")).its("status").should("eq", 200)
+        // })
         cy.get('[data-test="PictureCard"]')
             .should("have.length", 30)
             .and("be.visible")
@@ -21,10 +21,15 @@ describe("Search task", () => {
                     .first()
                     .invoke("text")
                     .then(($el) => {
-                        originCity = $el
+                        originDestination = $el
                             .replace(",", "")
                             .replace(/ /g, "-")
                             .toLowerCase()
+                        cy.log(originDestination)
+                        originCity = originDestination
+                            .split("-")[0]
+                            .charAt(0)
+                            .toUpperCase()
                         cy.log(originCity)
                     })
 
@@ -32,11 +37,16 @@ describe("Search task", () => {
                     .eq(1)
                     .invoke("text")
                     .then(($el) => {
-                        destinationCity = $el
+                        finalDestination = $el
                             .replace(",", "")
                             .replace(/ /g, "-")
                             .toLowerCase()
-                        cy.log(destinationCity)
+                        cy.log(finalDestination)
+                        finalCity = finalDestination
+                            .split("-")[0]
+                            .charAt(0)
+                            .toUpperCase()
+                        cy.log(finalCity)
                     })
             })
         cy.get('[data-test="PictureCard"]')
@@ -46,7 +56,7 @@ describe("Search task", () => {
             .then(() => {
                 cy.url().should(
                     "contain",
-                    `/cheap-flights/${originCity}/${destinationCity}`
+                    `/cheap-flights/${originDestination}/${finalDestination}`
                 )
             })
 
@@ -72,7 +82,6 @@ describe("Search task", () => {
                 .should("be.visible")
                 .click()
         })
-
         // click on Search button and check all information are correct
         cy.get('a[data-test*="SearchButton"]')
             .should("be.visible")
@@ -80,10 +89,23 @@ describe("Search task", () => {
             .then(() => {
                 cy.url().should(
                     "contain",
-                    `/search/results/${originCity}/${destinationCity}/anytime/no-return?bags=1.0`
+                    `/search/results/${originDestination}/${finalDestination}/anytime/no-return?bags=1.0`
                 )
             })
         cy.get('[data-test="ResultList"]').should("be.visible")
+
+        cy.get('[data-test="SearchFieldItem-origin"]').then(($el) => {
+            cy.wrap($el).should("contain", originCity)
+        })
+        cy.get('[data-test="SearchFieldItem-destination"]').then(($el) => {
+            cy.wrap($el).should("contain", finalCity)
+        })
+
+        cy.get('[data-test="BagsPopup-cabin"] input').should("have.value", 1)
+        cy.get('[data-test="SearchFormModesPicker-active-oneWay"]').should(
+            "contain",
+            "One-way"
+        )
     })
 
     it("Search Bus only with return date and share link", () => {
