@@ -9,9 +9,9 @@ describe("Search task", () => {
         cy.get('[data-test="PictureCard"]')
             .should("have.length", 30)
             .and("be.visible")
-        // .each((link) => {
-        //     cy.request(link.prop("href")).its("status").should("eq", 200)
-        // })
+            .each((link) => {
+                cy.request(link.prop("href")).its("status").should("eq", 200)
+            })
         cy.get('[data-test="PictureCard"]')
             .should("have.length", 30)
             .and("be.visible")
