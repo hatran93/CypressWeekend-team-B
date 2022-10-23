@@ -1,6 +1,6 @@
 describe("Search task test", () => {
     beforeEach("setup", () => {
-        cy.AllowCookies()
+        cy.setCookie("__kwc_agreed", "true")
     })
 
     it("Search one-way flight", () => {
