@@ -142,13 +142,14 @@ describe("Manage my booking", () => {
 
                 // wait for booking to process and reload page
                 // otherwise booking not processed and test fails
+                // status not possible to check-in with kiwi
                 cy.wait(5000)
                 cy.reload()
 
 
                 cy.get('[data-test^="BoardingPasses-section-"]').each(() => {
                     cy.get(
-                        '[data-test^="BoardingPassHeaderBadge-"]'
+                        '[data-test^="BoardingPassHeaderBadge-ground_processing"]'
                     ).should("be.visible")
                 })
 
