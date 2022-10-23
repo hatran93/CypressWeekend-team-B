@@ -129,8 +129,6 @@ describe("Manage my booking", () => {
 
                 cy.contains("Return to your trip").click()
 
-                cy.reload()
-
                 cy.get('[data-test="BookingStatusBadge-changeInProgress"]')
                     .should("contain", "Change in progress")
                     .click()
@@ -139,6 +137,13 @@ describe("Manage my booking", () => {
                     'div[role="tooltip"]',
                     "We're processing your requested itinerary change and we'll let you know as soon as it's done."
                 ).should("be.visible")
+
+                // wait for booking to process and reload page
+                // otherwise booking not processed and test fails
+                // status not possible to check-in with kiwi
+                cy.wait(5000)
+                cy.reload()
+
                 cy.get('[data-test^="BoardingPasses-section-"]').each(() => {
                     cy.get(
                         '[data-test="BoardingPassHeaderBadge-ground_processing"]'
@@ -167,7 +172,7 @@ describe("Manage my booking", () => {
                     "You've paid for this service. We'll let you know as soon as it has been processed."
                 ).should("be.visible")
 
-                //TODO check the baggade section
+                //TODO check the baggage section
             })
         })
     })
