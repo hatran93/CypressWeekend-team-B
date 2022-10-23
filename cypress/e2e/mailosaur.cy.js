@@ -1,4 +1,5 @@
 describe("Mailosaur task", () => {
+    const testStart = new Date()
     it("Mailosaur", () => {
         const serverId = "hpj3nevp"
         const testEmail = `something@${serverId}.mailosaur.net`
@@ -9,22 +10,16 @@ describe("Mailosaur task", () => {
             "POST",
             `https://qaa-be.platform-prod.skypicker.com/booking/simple?confirm=true&reservation_email=${testEmail}`
         ).then((xhr) => {
-            // cy.mailosaurGetMessagesBySubject(serverId, 'confirmed'
-            cy.mailosaurGetMessage(
-                serverId,
-                {
-                    sentTo: testEmail
-                },
-                {
-                    subject: "confirmed"
-                }
-            ).then((message) => {
+            cy.log(xhr)
+            const bookingId = xhr.body.split("<h2>")[1].split("<br>")[0].trim()
+            cy.mailosaurGetMessage(serverId, {
+                sentTo: testEmail,
+                subject: "confirmed",
+                receivedAfter: testStart
+            }).then((message) => {
                 cy.log("Message subject:", message.subject)
                 cy.writeFile(downloadedFile, message.html.body)
-                const bookingId = xhr.body
-                    .split("<h2>")[1]
-                    .split("<br>")[0]
-                    .trim()
+
                 cy.visit(`./${downloadedFile}`)
                 cy.contains("p", "Booking number")
                     .next("p")
